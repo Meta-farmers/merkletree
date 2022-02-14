@@ -67,7 +67,7 @@ var table = [];
 console.log("Root",ogTree.getHexRoot());
 console.log(
   "verify file",
-  raffleTree.verify(ogProofsFile[0].proof, ogLeaves[0], "0xf4b75bd033efeaca8a8931d5a02daf69724b4bcb61efa0488d664a6856c0eaf3")
+  raffleTree.verify(ogProofsFile[0].proof, ogLeaves[0], "0xab0971308f12da6b0139151187d927ce79987e5fa67c74e0883980478db358dd")
 );
 console.log(
   "verify process",
@@ -76,10 +76,6 @@ console.log(
 raffleProofs.forEach((element, index) => {
   table.push({ address: raffle[index][0], proof: element });
 });
-// console.log(
-//   "verify ",
-//   getTree(og).verify(getProofs[2], getLeaves(og)[2], getRoot(og))
-// );
 fs.writeFile("oglist.json", JSON.stringify(table), (err) => {
   if (err) {
     console.error(err);
