@@ -3,8 +3,8 @@ const axios = require("axios");
 const keccak256 = require("keccak256");
 const ethers = require("ethers");
 const og = require("./og.json");
-const ogList = require("./oglist.json");
-const raffleWinners = require("./ogClean.json");
+const ogProofsFile = require("./oglist.json");
+const ogWhiteListFile = require("./OG_inception.json");
 const fs = require("fs");
 
 function hashToken(account, amount) {
@@ -53,37 +53,28 @@ function getProofs(og) {
   return proofs;
 }
 
-const raffle = Object.entries(raffleWinners);
+const raffle = Object.entries(ogWhiteListFile);
 const raffleLeaves = raffle.map((token) => hashToken(...token));
-const ogLeaves = ogList.map((token) => hashToken(token.address,1));
+const ogLeaves = ogProofsFile.map((token) => hashToken(token.address, 1));
 const raffleTree = new MerkleTree(raffleLeaves, keccak256, { sortPairs: true });
 const ogTree = new MerkleTree(ogLeaves, keccak256, { sortPairs: true });
 const raffleRoot = raffleTree.getHexRoot();
 const raffleProofs = raffleLeaves.map((x) => raffleTree.getHexProof(x));
-myProof = [
-  "0x1cb7b6b61fb6cd7251efd20805dc6bac7415f50772e365327c5cbd38696494e2",
-  "0x7ffe6d39cac162557a011b386c2df7e8ccacc3af1ec5edfe3a46ebfb6f22d5cd",
-  "0xb1f1dbc69c9b5221e138dc3e789d90501105d47accd46612621018ffa0e48a8f",
-  "0xb8b7e5df363d699c8cde56ba58e182d8f07dd7427c5dd6cc5fa30588a6e3a49e",
-  "0x50b12a31275258a1bd5369533f08a6d30d7e82ec22f600a1b926bae023ecf7a1",
-  "0x075d52cd915dbdff41d97c1b8dce35e685d342f9e128a6770600dbebff67248a",
-  "0x07039e6dea5ed4080eca71124243c032d2c39f170de37741f9ab0ca78827f512",
-  "0xe2ac543a95a30de25ef3ee20777433205da28747c79ce3ebb0ea87b8e0668930",
-];
+const ogProofs = ogLeaves.map((x) => ogTree.getHexProof(x));
 var table = [];
 //getProofs(og).forEach((element,index) => console.log("",index,og[index].address,element));
 //getProofs(og).forEach((element,index) => table.push({"address":og[index].address.toLowerCase(),"proof":element}));
+console.log("Root",ogTree.getHexRoot());
 console.log(
-  "verify ",
-  raffleTree.verify(myProof, raffleLeaves[0], raffleTree.getHexRoot())
+  "verify file",
+  raffleTree.verify(ogProofsFile[0].proof, ogLeaves[0], "0xf4b75bd033efeaca8a8931d5a02daf69724b4bcb61efa0488d664a6856c0eaf3")
 );
 console.log(
-  "verify ",
-  ogTree.verify(ogList[0].proof, ogLeaves[0], ogTree.getHexRoot())
+  "verify process",
+  raffleTree.verify(ogProofs[0], ogLeaves[0], ogTree.getHexRoot())
 );
-console.log(ogList[0]);
 raffleProofs.forEach((element, index) => {
-  table.push({ "address":raffle[index][0], "proof" : element });
+  table.push({ address: raffle[index][0], proof: element });
 });
 // console.log(
 //   "verify ",
