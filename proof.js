@@ -4,7 +4,7 @@ const keccak256 = require("keccak256");
 const ethers = require("ethers");
 const og = require("./og.json");
 const ogProofsFile = require("./oglist.json");
-const ogWhiteListFile = require("./OG_inception.json");
+const ogWhiteListFile = require("./OG_ultimate.json");
 const fs = require("fs");
 
 function hashToken(account, amount) {
@@ -58,12 +58,9 @@ const raffleLeaves = raffle.map((token) => hashToken(...token));
 const ogLeaves = ogProofsFile.map((token) => hashToken(token.address, 1));
 const raffleTree = new MerkleTree(raffleLeaves, keccak256, { sortPairs: true });
 const ogTree = new MerkleTree(ogLeaves, keccak256, { sortPairs: true });
-const raffleRoot = raffleTree.getHexRoot();
 const raffleProofs = raffleLeaves.map((x) => raffleTree.getHexProof(x));
 const ogProofs = ogLeaves.map((x) => ogTree.getHexProof(x));
 var table = [];
-//getProofs(og).forEach((element,index) => console.log("",index,og[index].address,element));
-//getProofs(og).forEach((element,index) => table.push({"address":og[index].address.toLowerCase(),"proof":element}));
 console.log("Root",ogTree.getHexRoot());
 console.log(
   "verify file",
