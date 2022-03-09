@@ -4,7 +4,7 @@ const keccak256 = require("keccak256");
 const ethers = require("ethers");
 const og = require("./og.json");
 const ogProofsFile = require("./oglist.json");
-const ogWhiteListFile = require("./OG_ultimate.json");
+const ogWhiteListFile = require("./OG_freemint.json");
 const fs = require("fs");
 
 function hashToken(account, amount) {
@@ -64,7 +64,7 @@ var table = [];
 console.log("Root",ogTree.getHexRoot());
 console.log(
   "verify file",
-  raffleTree.verify(ogProofsFile[0].proof, ogLeaves[0], "0xab0971308f12da6b0139151187d927ce79987e5fa67c74e0883980478db358dd")
+  raffleTree.verify(ogProofsFile[0].proof, ogLeaves[0], "0xa04eec5e2e2a66f4f139315862156c0bf9943f09ad7532f655f85c8daa48870b")
 );
 console.log(
   "verify process",
@@ -79,3 +79,4 @@ fs.writeFile("oglist.json", JSON.stringify(table), (err) => {
     return;
   }
 });
+console.log(ethers.utils.keccak256("0x"));
