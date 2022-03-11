@@ -12,6 +12,6 @@ describe ("Merkle Tree Testing",()=>{
         expect(leaves).to.have.lengthOf(4)
 	})
 	it('Should equal to root tree', ()=>{
-        expect(getWhitelist(leaves)).equal(root)
+        expect(getWhitelist(leaves)[1]).equal(root)
 	})
 })

@@ -37,6 +37,3 @@ export const leaves = Object.entries({
   "0x597C9223bc620E1c170055958299cB7769b56eaA": 1,
   "0x184E509eEba9b0dC4985c5eF298649a736c2c615": 1,
 });
-
-const whitelist=getWhitelist(leaves)
-console.log(whitelist[0]["0x597C9223bc620E1c170055958299cB7769b56eaA"]);
