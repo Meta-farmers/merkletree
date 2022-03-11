@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "dev": "tsc merkle.ts; node merkle.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +16,7 @@
     "merkletreejs": "^0.2.27",
     "nft.storage": "^6.0.2",
     "undici": "^4.13.0",
+    "vitest": "^0.6.0",
     "web3.storage": "^3.5.7"
   }
 }
