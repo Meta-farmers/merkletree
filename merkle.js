@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
-exports.leaves = exports.verify = exports.getWhitelist = void 0;
+exports.verify = exports.verifyWithAmout = exports.getWhitelist = exports.getWhitelistWithAmount = void 0;
+var SHA256 = require("crypto-js/sha256");
 var MerkleTree = require("merkletreejs").MerkleTree;
 var keccak256 = require("keccak256");
 var utils = require("ethers").utils;
@@ -13,7 +14,7 @@ function hashLeaves(leaves) {
 function getMerkleTree(hashedLeaves) {
     return new MerkleTree(hashedLeaves, keccak256, { sortPairs: true });
 }
-function getWhitelist(leaves) {
+function getWhitelistWithAmount(leaves) {
     var hashedLeaves = hashLeaves(leaves);
     var merkleTree = getMerkleTree(hashedLeaves);
     var whitelist = {};
@@ -22,16 +23,33 @@ function getWhitelist(leaves) {
     });
     return [whitelist, merkleTree.getHexRoot()];
 }
+exports.getWhitelistWithAmount = getWhitelistWithAmount;
+function getWhitelist(leaves) {
+    // const hashedLeaves = leaves.map(x => SHA256(x));
+    var hashedLeaves = leaves.map(function (x) { return (x); });
+    var tree = newMerkleTree(hashedLeaves);
+    console.log((hashedLeaves[0]));
+    var leaf = hashedLeaves[0];
+    console.log(tree.getHexProof(leaf));
+    // const ok =tree.verify(tree.getHexProof(leaf),leaf,tree.getHexRoot())
+    var ok = verify(tree.getHexProof(leaf), leaf, tree.getHexRoot());
+    console.log(ok);
+    var whitelist = {};
+    hashedLeaves.forEach(function (leaf, index) {
+        whitelist[leaves[index]] = tree.getHexProof(leaf);
+    });
+    return [whitelist, tree.getHexRoot()];
+}
 exports.getWhitelist = getWhitelist;
-function verify(root, leaf) {
-    return true;
+function newMerkleTree(hashedLeaves) {
+    return new MerkleTree(hashedLeaves, keccak256, { sortPairs: true, sortLeaves: true });
+}
+function verifyWithAmout(root, proof, address, amount) {
+    var merkleTree = new MerkleTree();
+    return merkleTree.verify(proof, hashToken(address, amount), root);
+}
+exports.verifyWithAmout = verifyWithAmout;
+function verify(proof, address, root) {
+    return MerkleTree.verify(proof, address, root, keccak256, { sortPairs: true, sortLeaves: true });
 }
 exports.verify = verify;
-exports.leaves = Object.entries({
-    "0x7B0c2F65A7DC95b11B0b99111192bfddA2F08271": 1,
-    "0x655d8A60345188b2C94d543dE4eafF58905A40fD": 1,
-    "0x597C9223bc620E1c170055958299cB7769b56eaA": 1,
-    "0x184E509eEba9b0dC4985c5eF298649a736c2c615": 1
-});
-var whitelist = getWhitelist(exports.leaves);
-console.log(whitelist[0]["0x597C9223bc620E1c170055958299cB7769b56eaA"]);

@@ -5,16 +5,19 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest",
-    "dev": "tsc merkle.ts; node merkle.js"
+    "dev": "tsc index.ts; node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ethersproject/keccak256": "^5.6.0",
     "axios": "^0.25.0",
     "ethers": "^5.5.4",
     "keccak256": "^1.0.6",
     "merkletreejs": "^0.2.27",
+    "minify": "^8.0.4",
     "nft.storage": "^6.0.2",
+    "sha3": "^2.1.4",
     "undici": "^4.13.0",
     "vitest": "^0.6.0",
     "web3.storage": "^3.5.7"

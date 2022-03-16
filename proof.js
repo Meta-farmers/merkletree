@@ -62,6 +62,7 @@ const raffleProofs = raffleLeaves.map((x) => raffleTree.getHexProof(x));
 const ogProofs = ogLeaves.map((x) => ogTree.getHexProof(x));
 var table = [];
 console.log("Root",ogTree.getHexRoot());
+console.log("Proof",ogProofsFile[0].proof);
 console.log(
   "verify file",
   raffleTree.verify(ogProofsFile[0].proof, ogLeaves[0], "0xa04eec5e2e2a66f4f139315862156c0bf9943f09ad7532f655f85c8daa48870b")
